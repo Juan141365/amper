@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credifast</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('https://image.shutterstock.com/image-vector/money-bag-icon-isolated-on-260nw-1485960288.jpg');
+            background-size: cover;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            cursor: pointer;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .slider-container {
+            margin-top: 20px;
+        }
+        .slider-container input[type="range"] {
+            width: 100%;
+        }
+        .slider-value {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 10px;
+            color: #4CAF50;
+        }
+        .quote {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+            color: #666;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .cta-button:hover {
+            background-color: #45a049;
+        }
+        /* Estilos para la ventana modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.4); 
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .modal-content input[type="text"], .modal-content input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .modal-content button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+        .modal-content button:hover {
+            background-color: #45a049;
+        }
+        .modal-content .signup {
+            background-color: #f1f1f1;
+            color: black;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Credifast</h1>
+    <a id="loginBtn">Iniciar Sesión</a>
+</header>
+
+<div class="container">
+    <p class="quote">Obtén el préstamo que necesitas al instante</p>
+
+    <div class="slider-container">
+        <label for="loanAmount">Monto del préstamo:</label>
+        <input type="range" id="loanAmount" name="loanAmount" min="0" max="1000000" value="500000" oninput="updateLoanValue()">
+        <div class="slider-value">Monto seleccionado: $<span id="loanValue">500,000</span></div>
+    </div>
+
+    <div class="actions">
+        <div>
+            <label for="installments">Cuotas mensuales:</label>
+            <input type="text" id="installments" readonly>
+        </div>
+        <a href="#" class="cta-button">Solicitar Crédito</a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <input type="text" placeholder="Número de Teléfono" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+        <button type="button" class="signup" onclick="window.location.href='signup.html'">Crear Cuenta</button>
+    </div>
+</div>
+
+<script>
+    // Función para actualizar el valor del préstamo
+    function updateLoanValue() {
+        var slider = document.getElementById("loanAmount");
+        var loanValue = document.getElementById("loanValue");
+        var installments = document.getElementById("installments");
+
+        loanValue.textContent = slider.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        // Ejemplo: cálculo simple de cuotas (12 cuotas al 10% anual)
+        var monthlyPayment = (slider.value * 1.1) / 12;
+        installments.value = "$" + monthlyPayment.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // Inicializar con los valores predeterminados
+    updateLoanValue();
+
+    // Script para la ventana modal
+    var modal = document.getElementById("loginModal");
+    var btn = document.getElementById("loginBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

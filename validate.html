@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Crédito - Credifast</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Resultado de Crédito</h2>
+    <p id="result"></p>
+</div>
+
+<script>
+    // Obtener la fecha de nacimiento del localStorage (simulando el envío de datos)
+    var dob = localStorage.getItem('dob');
+    var result = document.getElementById('result');
+
+    // Calcular la edad
+    var birthDate = new Date(dob);
+    var age = new Date().getFullYear() - birthDate.getFullYear();
+    var monthDifference = new Date().getMonth() - birthDate.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    // Mostrar el resultado según la edad
+    if (age < 20) {
+        result.textContent = "Crédito Denegado. Debes ser mayor de 20 años.";
+        result.style.color = "red";
+    } else {
+        result.textContent = "¡Felicidades! Tu crédito ha sido aprobado.";
+        result.style.color = "green";
+    }
+</script>
+
+</body>
+</html>
